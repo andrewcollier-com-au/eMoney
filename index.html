@@ -1,0 +1,320 @@
+<html>
+<title>EMoney</title>
+<header>
+    <meta name="viewport" content="width=480">
+    <meta name="viewport" content="width=480, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<style>
+    body {margin:0px; overflow-y: scroll;}
+    table {padding:0px; border-spacing:0px;}
+    .header {
+        background-image: linear-gradient(to bottom right, rgb(101, 3, 186) 30%, rgba(52, 1, 101) 70%);
+        background-color: rgb(98, 3, 187);
+        border-bottom: 3px solid rgba(101, 3, 186, 0.8);
+        filter: drop-shadow(0px 4px 5px rgba(150, 149, 149, 0.5));}
+    .sideBorder {background-color: rgb(106, 106, 106);}
+    .whiteBG {background-color: rgb(248, 248, 255)}
+    .addressButton {
+        background-image: linear-gradient(to bottom, rgba(30, 143, 255, 0.824) 10%, rgba(6, 93, 179, 0.961) 88%);
+        background-color: rgba(30, 143, 255, 0.824); 
+        color: rgb(248, 248, 255); 
+        font-weight: normal; 
+        font-size: 18px; 
+        width:200px;
+        height: 35px;
+        filter: drop-shadow(3px 4px 5px rgba(150, 149, 149, 0.461));
+        text-align-last: center;
+        border-color: transparent;
+        -webkit-appearance: none;
+        padding-right: 10px;
+        }
+    .currancyBox{
+        border:1px solid rgb(193, 193, 193);
+        border-radius: 5px;
+        background-color: rgba(235, 235, 235, 0.80);
+        font-size: 18px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        filter: drop-shadow(4px 4px 5px rgba(150, 149, 149, 0.461));
+        }
+    .currancyBoxHeader{
+        background-color: rgba(220, 220, 220, 0.8);
+        font-weight: bold;
+        height:30px;
+        filter: drop-shadow(0px 3px 3px rgba(150, 149, 149, 0.461));
+        background-image: linear-gradient(to bottom,rgba(220, 220, 220, 0.8), rgba(121, 120, 120, 0.7)); 
+        cursor: pointer;
+    }
+    .currancyTotalHeader{
+        background-color: rgba(245, 245, 245, 0.241);
+        font-weight: bold;
+        height:30px;
+        filter: drop-shadow(0px 3px 3px rgba(150, 149, 149, 0.6));
+    }
+    .addressFooter{
+        font-size: 12px;
+    }
+    .OnePix{
+        height: 1px;
+    }
+    .FivePix{
+        height: 5px;
+    }
+    .TenPix{
+        height: 10px;
+    }
+    .TwentyPix{
+        height: 20px;
+    }
+    .animateDiv{
+        position: inherit;
+        display: none;
+    }
+    .imgLink{
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        $(".currancyBoxHeader").click(function(){
+            $(this).parent().find("div").slideToggle(100);
+        });
+    }); 
+
+</script>
+
+</header>
+
+<body class="whiteBG">
+<table width="100%" style="position: fixed; z-index: 1;">
+    <tr><td height="60px" class="header" colspan="3" align="right">
+        <center style="position: absolute; left:22%; color: ghostwhite; font-weight: bold; font-size: 20px;">E-Money</center>
+       <select class="addressButton" id="accountAddress" onchange="changeAccount(this.value);">
+           <option>LOADING...</option>
+       </select>&nbsp;&nbsp;&nbsp;&nbsp;
+    </td></tr> 
+</table>
+<table width="100%" height="100%">
+    <tr><td height="43"></td></tr>
+    <tr>
+        <td class="sideBorder"></td>
+        <td width="600px" valign="top">
+            <table width="100%" height="100%">
+                <tr><td width="20%"></td><td style="height:90px;">&nbsp;</td><td width="20%"><img align="right" src="settings.png" width="50" height="50" onclick="alert('settings');"></td></tr>
+                <tr><td></td><td valign="top" align="center" id="mainContent">
+
+                    <table width="350" class="currancyBox">
+                        <tr class="currancyBoxHeader"><td>&nbsp;&nbsp;BTC</td><td align="right">&#x0e3f;0.0552&nbsp;&nbsp;</td></tr>
+                        <tr><td colspan="2">
+                        <div class="animateDiv">
+                            <table width="100%">
+                                <tr><td class="FivePix"></td></tr>
+                                <tr><td align="right"><b>Balance:</b>&nbsp;</td><td>&#x0e3f;0.0552</td></tr>
+                                <tr><td align="right"><b>Escrow:</b>&nbsp;</td><td>&#x0e3f;0.00</td></tr>
+                                <tr><td align="right"><b>Uncleared:</b>&nbsp;</td><td>&#x0e3f;0.00</td></tr>
+                                <tr><td colspan="2" align="center">
+                                    <img src="pay.png" width="40" height="40" alt="Pay" class="imgLink" onclick="alert('pay to address');">
+                                    <img src="lockDollar.png" width="40" height="40" alt="Escrow" class="imgLink" onclick="alert('auth escrow pay or collect');">
+                                    <img src="swapCurrency.jpeg" width="40" height="40" alt="Swap" class="imgLink" onclick="alert('change currency within address');">
+                                    <img src="list.png" width="40" height="40" alt="List" class="imgLink" onclick="alert('transaction histroy');">
+                                </td></tr>
+                            </table>
+                            </div>
+                        </td></tr>
+                    </table>
+                    <div class="TwentyPix">&nbsp;</div>
+
+                    <table width="350" class="currancyBox">
+                        <tr class="currancyBoxHeader"><td>&nbsp;&nbsp;ETH</td><td align="right">0.19800&nbsp;&nbsp;</td></tr>
+                        <tr><td colspan="2">
+                        <div class="animateDiv">
+                            <table width="100%">
+                                <tr><td class="FivePix"></td></tr>
+                                <tr><td align="right"><b>Balance:</b>&nbsp;</td><td>0.19800</td></tr>
+                                <tr><td align="right"><b>Escrow:</b>&nbsp;</td><td>0.00</td></tr>
+                                <tr><td align="right"><b>Uncleared:</b>&nbsp;</td><td>0.00</td></tr>
+                                <tr><td colspan="2" align="center">
+                                    <img src="pay.png" width="40" height="40" alt="Pay" class="imgLink" onclick="alert('pay to address');">
+                                    <img src="lockDollar.png" width="40" height="40" alt="Escrow" class="imgLink" onclick="alert('auth escrow pay or collect');">
+                                    <img src="swapCurrency.jpeg" width="40" height="40" alt="Swap" class="imgLink" onclick="alert('change currency within address');">
+                                    <img src="list.png" width="40" height="40" alt="List" class="imgLink" onclick="alert('transaction histroy');">
+                                </td></tr>
+                            </table>
+                            </div>
+                        </td></tr>
+                    </table>
+                    <div class="TwentyPix">&nbsp;</div>
+
+
+                    <table width="350" class="currancyBox">
+                        <tr class="currancyBoxHeader"><td>&nbsp;&nbsp;eAUD</td><td align="right">$500.00&nbsp;&nbsp;</td></tr>
+                        <tr><td colspan="2">
+                        <div class="animateDiv">
+                            <table width="100%">
+                                <tr><td class="FivePix"></td></tr>
+                                <tr><td align="right"><b>Balance:</b>&nbsp;</td><td>$500.00</td></tr>
+                                <tr><td align="right"><b>Escrow:</b>&nbsp;</td><td>$50.00</td></tr>
+                                <tr><td align="right"><b>Uncleared:</b>&nbsp;</td><td>$0.00</td></tr>
+                                <tr><td colspan="2" align="center">
+                                    <img src="pay.png" width="40" height="40" alt="Pay" class="imgLink" onclick="alert('pay to address');">
+                                    <img src="lockDollar.png" width="40" height="40" alt="Escrow" class="imgLink" onclick="alert('auth escrow pay or collect');">
+                                    <img src="swapCurrency.jpeg" width="40" height="40" alt="Swap" class="imgLink" onclick="alert('change currency within address');">
+                                    <img src="list.png" width="40" height="40" alt="List" class="imgLink" onclick="alert('transaction histroy');">
+                                </td></tr>
+                            </table>
+                            </div>
+                        </td></tr>
+                    </table>
+                    <div class="TwentyPix">&nbsp;</div>
+
+                    <table width="350" class="currancyBox">
+                        <tr class="currancyBoxHeader"><td>&nbsp;&nbsp;eNZD</td><td align="right">$575.00&nbsp;&nbsp;</td></tr>
+                        <tr><td colspan="2">
+                        <div class="animateDiv">
+                            <table width="100%">
+                                <tr><td class="FivePix"></td></tr>
+                                <tr><td align="right"><b>Balance:</b>&nbsp;</td><td>$575.00</td></tr>
+                                <tr><td align="right"><b>Escrow:</b>&nbsp;</td><td>$0.00</td></tr>
+                                <tr><td align="right"><b>Uncleared:</b>&nbsp;</td><td>$57.50</td></tr>
+                                <tr><td colspan="2" align="center">
+                                    <img src="pay.png" width="40" height="40" alt="Pay" class="imgLink">
+                                    <img src="lockDollar.png" width="40" height="40" alt="Escrow" class="imgLink" onclick="alert('auth escrow pay or collect');">
+                                    <img src="swapCurrency.jpeg" width="40" height="40" alt="Swap" class="imgLink" onclick="alert('change currency within address');">
+                                    <img src="list.png" width="40" height="40" alt="List" class="imgLink" onclick="alert('transaction history');">
+                                </td></tr>
+                            </table>
+                            </div>
+                        </td></tr>
+                    </table>
+                    <div class="TwentyPix">&nbsp;</div>
+
+                    <table width="350" class="currancyBox">
+                        <tr class="currancyTotalHeader"><td>&nbsp;&nbsp;Total</td><td align="right">AUD $1,868.30&nbsp;&nbsp;</td></tr>
+                    </table>
+                    <br><br><br><br>
+
+
+                        <div id="addressFooter" class="addressFooter">PUBLIC ACCOUNT ADDRESS</div>
+                </td></tr>
+            </table>
+        </td>
+        <td class="sideBorder"></td>
+    </tr>
+</table>
+</body>
+
+
+<script>
+    var metaProxyFlag = false;
+    if (typeof web3 !== 'undefined') {
+        // Mist, Metamask
+        web3 = new Web3(web3.currentProvider);
+        metaProxyFlag = true;
+    } else {
+        // set the provider you want from Web3.providers
+        web3 = new Web3(new Web3.providers.HttpProvider("https://node.libre.website:777"));
+        //web3 = new Web3(new Web3.providers.HttpProvider("http://123.208.152.82:777"));
+        metaProxyFlag = false;
+    }
+
+//    var lastAccounts;
+//  let go = async () => {
+//        if (metaProxyFlag){
+//            const accounts = await web3.eth.getAccounts();
+//            //format into json object/array
+//       }
+//        else {
+//            //get json object/array from storage
+//        }
+//
+//        if (accounts != lastAccounts){
+//            var accountString = accounts[0].toString()
+//            if (accountString == "") {alert('Connect Metamask (settings > connections)');}
+//            $("#accountAddress").html($("<option>").attr('value',accountString).text(jQuery.trim(accountString).substring(0, 10) + "..." + jQuery.trim(accountString).substring(accountString.length-5, accountString.length)));
+//            lastAccounts = accountString;
+//        }
+//            //console.log(web3.eth.getBalance());
+//   }
+
+if (typeof(Storage) !== "undefined") {
+    if (!localStorage.addresses) {
+        localStorage.addresses = JSON.stringify(new Array());
+    }
+}
+
+var lastAddresses;
+let go = async () => {
+
+    if (metaProxyFlag){
+        const account = await web3.eth.getAccounts();
+        if (lastAddresses != account[0]){
+            $("#accountAddress").html("<option>METAMASK</option>");
+            setAccount(account[0]);
+            lastAddresses = account[0];
+        }
+    }
+    else{
+        if (lastAddresses != localStorage.addresses){
+            let addresses = new Array();
+            addresses = JSON.parse(localStorage.addresses);
+            if (addresses.length == 0){addresses[addresses.length] = addNewAccount();}
+
+            var inc = 0;
+            addresses.forEach(function(item){
+                if (inc == 0){
+                    $("#accountAddress").html("<option>"+item+"</option>");
+                } else{
+                    $("#accountAddress option:last").after("<option>"+item+"</option>");
+                }
+                inc++;
+            });
+            $("#accountAddress option:last").after("<option>Create New</option>");
+            setAccount(addresses[0]);
+            lastAddresses = localStorage.addresses;
+        }
+    }
+    
+}
+
+    
+    function addNewAccount(){
+        //get storage obj and append with new address
+        let addresses = new Array();
+        addresses = JSON.parse(localStorage.addresses);
+        let newAddress = web3.eth.accounts.create().address;
+        addresses[addresses.length] = newAddress;
+//console.log(addresses.length);
+        localStorage.addresses = JSON.stringify(addresses);
+        return newAddress;
+    }
+
+    function setAccount(address){
+        console.log("refresh account page");
+        $("#addressFooter").html(address);
+        //get value from object selection, load private key from storage 
+        //store in hidden and 
+        //set public key address.
+        //fire refresh account details
+    }
+
+    function changeAccount(option){
+        if (option == "Create New"){
+            option = addNewAccount();
+        }
+        setAccount(option);
+//console.log("account select was changed");
+
+
+    }
+
+    let refreshAccount = async () => {
+        //go off and get the account abi and balances object for every contract with a balance
+
+    }
+
+
+    setInterval(go, 1500);
+    </script>
+
+</html>
